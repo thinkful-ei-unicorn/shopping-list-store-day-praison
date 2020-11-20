@@ -1,3 +1,5 @@
+"use strict";
+
 const store = {
   items: [
     { id: cuid(), name: 'apples', checked: false },
@@ -10,11 +12,16 @@ const store = {
 
 const generateItemElement = function (item) {
   let itemTitle = `<span class='shopping-item shopping-item__checked'>${item.name}</span>`;
-  if (!item.checked) {
-    itemTitle = `
-     <span class='shopping-item'>${item.name}</span>
-    `;
-  }
+    if (!item.checked) {
+      itemTitle = 
+    //     <form class="js-edit-item">
+    //       <input class="shopping-item" type="text" value="${item.name}" />
+    //     </form>;
+     `<input class = "js-item-edit" name = "js-item-edit" value = "${item.name}"
+
+     `;
+         
+    }
 
   return `
     <li class='js-item-element' data-item-id='${item.id}'>
@@ -26,6 +33,10 @@ const generateItemElement = function (item) {
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
         </button>
+        <button class='shopping-item-edit js-item-edit'>
+          <span class='button-label'>edit</span>
+        </button>
+        
       </div>
     </li>`;
 };
@@ -66,6 +77,12 @@ const addItemToShoppingList = function (itemName) {
   store.items.push({ id: cuid(), name: itemName, checked: false });
 };
 
+const editItem = function(id,itemName){
+  const item = store.items.find (item => item.id ===id);
+  item.name =itemName;
+
+};
+
 const handleNewItemSubmit = function () {
   $('#js-shopping-list-form').submit(function (event) {
     event.preventDefault();
@@ -88,6 +105,16 @@ const handleItemCheckClicked = function () {
     render();
   });
 };
+
+// const handleEditItem = function(){
+//   $('.js-shopping-list').on('submit','js-edit-item', function (event){
+//     event.preventDefault();
+//     const id = getItemIdFromElement(event.currentTarget);
+//     const itemName =$(event.currentTarget).find('.shopping-item').val();
+//     editItem (id, itemName);
+//     render();
+//   })
+// }
 
 const getItemIdFromElement = function (item) {
   return $(item)
@@ -127,6 +154,24 @@ const handleDeleteItemClicked = function () {
   });
 };
 
+const replaceItemName = function(id, newItemName){
+  const idx = store.items.findIndex ((item)=> item.id === id);
+  store.items[idx].name = newItemNamel
+}
+
+// Edit title
+const handleEditItemClicked = function () {
+  $(".js-shopping-list").on("change", ".js-item-edit", function(event){
+    event.preventDefault();
+    $this.val();
+    let newItem = $(this).val();
+    const itemID = getItemIdFromElement (event.currentTarget);
+    replaceItemName (id, newItemName);
+  });
+};
+
+// }
+
 /**
  * Toggles the store.hideCheckedItems property
  */
@@ -159,6 +204,7 @@ const handleShoppingList = function () {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleEditItem()
   handleToggleFilterClick();
 };
 
